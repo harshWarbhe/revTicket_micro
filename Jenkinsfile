@@ -174,14 +174,20 @@ pipeline {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin || true
+                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
                                     
-                                    docker buildx build \
-                                        --platform ${PLATFORMS} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-frontend:${BUILD_NUMBER} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-frontend:latest \
-                                        --push \
-                                        .
+                                    for i in {1..3}; do
+                                        echo "Attempt $i of 3..."
+                                        docker buildx build \
+                                            --platform ${PLATFORMS} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-frontend:${BUILD_NUMBER} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-frontend:latest \
+                                            --push \
+                                            . && break || {
+                                                echo "Build attempt $i failed, waiting 10 seconds..."
+                                                sleep 10
+                                            }
+                                    done
                                 '''
                             }
                         }
@@ -194,14 +200,20 @@ pipeline {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin || true
+                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
                                     
-                                    docker buildx build \
-                                        --platform ${PLATFORMS} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-api-gateway:${BUILD_NUMBER} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-api-gateway:latest \
-                                        --push \
-                                        .
+                                    for i in {1..3}; do
+                                        echo "Attempt $i of 3..."
+                                        docker buildx build \
+                                            --platform ${PLATFORMS} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-api-gateway:${BUILD_NUMBER} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-api-gateway:latest \
+                                            --push \
+                                            . && break || {
+                                                echo "Build attempt $i failed, waiting 10 seconds..."
+                                                sleep 10
+                                            }
+                                    done
                                 '''
                             }
                         }
@@ -214,14 +226,20 @@ pipeline {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin || true
+                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
                                     
-                                    docker buildx build \
-                                        --platform ${PLATFORMS} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-user-service:${BUILD_NUMBER} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-user-service:latest \
-                                        --push \
-                                        .
+                                    for i in {1..3}; do
+                                        echo "Attempt $i of 3..."
+                                        docker buildx build \
+                                            --platform ${PLATFORMS} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-user-service:${BUILD_NUMBER} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-user-service:latest \
+                                            --push \
+                                            . && break || {
+                                                echo "Build attempt $i failed, waiting 10 seconds..."
+                                                sleep 10
+                                            }
+                                    done
                                 '''
                             }
                         }
@@ -234,14 +252,20 @@ pipeline {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin || true
+                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
                                     
-                                    docker buildx build \
-                                        --platform ${PLATFORMS} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-movie-service:${BUILD_NUMBER} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-movie-service:latest \
-                                        --push \
-                                        .
+                                    for i in {1..3}; do
+                                        echo "Attempt $i of 3..."
+                                        docker buildx build \
+                                            --platform ${PLATFORMS} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-movie-service:${BUILD_NUMBER} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-movie-service:latest \
+                                            --push \
+                                            . && break || {
+                                                echo "Build attempt $i failed, waiting 10 seconds..."
+                                                sleep 10
+                                            }
+                                    done
                                 '''
                             }
                         }
@@ -254,14 +278,20 @@ pipeline {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin || true
+                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
                                     
-                                    docker buildx build \
-                                        --platform ${PLATFORMS} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-theater-service:${BUILD_NUMBER} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-theater-service:latest \
-                                        --push \
-                                        .
+                                    for i in {1..3}; do
+                                        echo "Attempt $i of 3..."
+                                        docker buildx build \
+                                            --platform ${PLATFORMS} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-theater-service:${BUILD_NUMBER} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-theater-service:latest \
+                                            --push \
+                                            . && break || {
+                                                echo "Build attempt $i failed, waiting 10 seconds..."
+                                                sleep 10
+                                            }
+                                    done
                                 '''
                             }
                         }
@@ -274,14 +304,20 @@ pipeline {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin || true
+                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
                                     
-                                    docker buildx build \
-                                        --platform ${PLATFORMS} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-showtime-service:${BUILD_NUMBER} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-showtime-service:latest \
-                                        --push \
-                                        .
+                                    for i in {1..3}; do
+                                        echo "Attempt $i of 3..."
+                                        docker buildx build \
+                                            --platform ${PLATFORMS} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-showtime-service:${BUILD_NUMBER} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-showtime-service:latest \
+                                            --push \
+                                            . && break || {
+                                                echo "Build attempt $i failed, waiting 10 seconds..."
+                                                sleep 10
+                                            }
+                                    done
                                 '''
                             }
                         }
@@ -294,14 +330,20 @@ pipeline {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin || true
+                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
                                     
-                                    docker buildx build \
-                                        --platform ${PLATFORMS} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-booking-service:${BUILD_NUMBER} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-booking-service:latest \
-                                        --push \
-                                        .
+                                    for i in {1..3}; do
+                                        echo "Attempt $i of 3..."
+                                        docker buildx build \
+                                            --platform ${PLATFORMS} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-booking-service:${BUILD_NUMBER} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-booking-service:latest \
+                                            --push \
+                                            . && break || {
+                                                echo "Build attempt $i failed, waiting 10 seconds..."
+                                                sleep 10
+                                            }
+                                    done
                                 '''
                             }
                         }
@@ -314,14 +356,20 @@ pipeline {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin || true
+                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
                                     
-                                    docker buildx build \
-                                        --platform ${PLATFORMS} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-payment-service:${BUILD_NUMBER} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-payment-service:latest \
-                                        --push \
-                                        .
+                                    for i in {1..3}; do
+                                        echo "Attempt $i of 3..."
+                                        docker buildx build \
+                                            --platform ${PLATFORMS} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-payment-service:${BUILD_NUMBER} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-payment-service:latest \
+                                            --push \
+                                            . && break || {
+                                                echo "Build attempt $i failed, waiting 10 seconds..."
+                                                sleep 10
+                                            }
+                                    done
                                 '''
                             }
                         }
@@ -334,14 +382,20 @@ pipeline {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin || true
+                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
                                     
-                                    docker buildx build \
-                                        --platform ${PLATFORMS} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-review-service:${BUILD_NUMBER} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-review-service:latest \
-                                        --push \
-                                        .
+                                    for i in {1..3}; do
+                                        echo "Attempt $i of 3..."
+                                        docker buildx build \
+                                            --platform ${PLATFORMS} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-review-service:${BUILD_NUMBER} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-review-service:latest \
+                                            --push \
+                                            . && break || {
+                                                echo "Build attempt $i failed, waiting 10 seconds..."
+                                                sleep 10
+                                            }
+                                    done
                                 '''
                             }
                         }
@@ -354,14 +408,20 @@ pipeline {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin || true
+                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
                                     
-                                    docker buildx build \
-                                        --platform ${PLATFORMS} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-search-service:${BUILD_NUMBER} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-search-service:latest \
-                                        --push \
-                                        .
+                                    for i in {1..3}; do
+                                        echo "Attempt $i of 3..."
+                                        docker buildx build \
+                                            --platform ${PLATFORMS} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-search-service:${BUILD_NUMBER} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-search-service:latest \
+                                            --push \
+                                            . && break || {
+                                                echo "Build attempt $i failed, waiting 10 seconds..."
+                                                sleep 10
+                                            }
+                                    done
                                 '''
                             }
                         }
@@ -374,14 +434,20 @@ pipeline {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin || true
+                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
                                     
-                                    docker buildx build \
-                                        --platform ${PLATFORMS} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-notification-service:${BUILD_NUMBER} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-notification-service:latest \
-                                        --push \
-                                        .
+                                    for i in {1..3}; do
+                                        echo "Attempt $i of 3..."
+                                        docker buildx build \
+                                            --platform ${PLATFORMS} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-notification-service:${BUILD_NUMBER} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-notification-service:latest \
+                                            --push \
+                                            . && break || {
+                                                echo "Build attempt $i failed, waiting 10 seconds..."
+                                                sleep 10
+                                            }
+                                    done
                                 '''
                             }
                         }
@@ -394,14 +460,20 @@ pipeline {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin || true
+                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
                                     
-                                    docker buildx build \
-                                        --platform ${PLATFORMS} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-settings-service:${BUILD_NUMBER} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-settings-service:latest \
-                                        --push \
-                                        .
+                                    for i in {1..3}; do
+                                        echo "Attempt $i of 3..."
+                                        docker buildx build \
+                                            --platform ${PLATFORMS} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-settings-service:${BUILD_NUMBER} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-settings-service:latest \
+                                            --push \
+                                            . && break || {
+                                                echo "Build attempt $i failed, waiting 10 seconds..."
+                                                sleep 10
+                                            }
+                                    done
                                 '''
                             }
                         }
@@ -414,14 +486,20 @@ pipeline {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin || true
+                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
                                     
-                                    docker buildx build \
-                                        --platform ${PLATFORMS} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-dashboard-service:${BUILD_NUMBER} \
-                                        --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-dashboard-service:latest \
-                                        --push \
-                                        .
+                                    for i in {1..3}; do
+                                        echo "Attempt $i of 3..."
+                                        docker buildx build \
+                                            --platform ${PLATFORMS} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-dashboard-service:${BUILD_NUMBER} \
+                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-dashboard-service:latest \
+                                            --push \
+                                            . && break || {
+                                                echo "Build attempt $i failed, waiting 10 seconds..."
+                                                sleep 10
+                                            }
+                                    done
                                 '''
                             }
                         }
