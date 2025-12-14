@@ -165,343 +165,211 @@ pipeline {
             }
         }
         
+        stage('Docker Login') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh '''
+                        export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+                    '''
+                }
+            }
+        }
+        
         stage('Build & Push Multi-Arch Images') {
             parallel {
                 stage('Frontend') {
                     steps {
-                        withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('Frontend') {
-                                sh '''
-                                    export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
-                                    docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                                    
-                                    for i in {1..3}; do
-                                        echo "Attempt $i of 3..."
-                                        docker buildx build \
-                                            --platform ${PLATFORMS} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-frontend:${BUILD_NUMBER} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-frontend:latest \
-                                            --push \
-                                            . && break || {
-                                                echo "Build attempt $i failed, waiting 10 seconds..."
-                                                sleep 10
-                                            }
-                                    done
-                                '''
-                            }
+                        dir('Frontend') {
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                docker buildx build \
+                                    --platform ${PLATFORMS} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-frontend:${BUILD_NUMBER} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-frontend:latest \
+                                    --push \
+                                    .
+                            '''
                         }
                     }
                 }
                 stage('API Gateway') {
                     steps {
-                        withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('Microservices-Backend/api-gateway') {
-                                sh '''
-                                    export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
-                                    docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                                    
-                                    for i in {1..3}; do
-                                        echo "Attempt $i of 3..."
-                                        docker buildx build \
-                                            --platform ${PLATFORMS} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-api-gateway:${BUILD_NUMBER} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-api-gateway:latest \
-                                            --push \
-                                            . && break || {
-                                                echo "Build attempt $i failed, waiting 10 seconds..."
-                                                sleep 10
-                                            }
-                                    done
-                                '''
-                            }
+                        dir('Microservices-Backend/api-gateway') {
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                docker buildx build \
+                                    --platform ${PLATFORMS} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-api-gateway:${BUILD_NUMBER} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-api-gateway:latest \
+                                    --push \
+                                    .
+                            '''
                         }
                     }
                 }
                 stage('User Service') {
                     steps {
-                        withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('Microservices-Backend/user-service') {
-                                sh '''
-                                    export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
-                                    docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                                    
-                                    for i in {1..3}; do
-                                        echo "Attempt $i of 3..."
-                                        docker buildx build \
-                                            --platform ${PLATFORMS} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-user-service:${BUILD_NUMBER} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-user-service:latest \
-                                            --push \
-                                            . && break || {
-                                                echo "Build attempt $i failed, waiting 10 seconds..."
-                                                sleep 10
-                                            }
-                                    done
-                                '''
-                            }
+                        dir('Microservices-Backend/user-service') {
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                docker buildx build \
+                                    --platform ${PLATFORMS} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-user-service:${BUILD_NUMBER} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-user-service:latest \
+                                    --push \
+                                    .
+                            '''
                         }
                     }
                 }
                 stage('Movie Service') {
                     steps {
-                        withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('Microservices-Backend/movie-service') {
-                                sh '''
-                                    export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
-                                    docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                                    
-                                    for i in {1..3}; do
-                                        echo "Attempt $i of 3..."
-                                        docker buildx build \
-                                            --platform ${PLATFORMS} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-movie-service:${BUILD_NUMBER} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-movie-service:latest \
-                                            --push \
-                                            . && break || {
-                                                echo "Build attempt $i failed, waiting 10 seconds..."
-                                                sleep 10
-                                            }
-                                    done
-                                '''
-                            }
+                        dir('Microservices-Backend/movie-service') {
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                docker buildx build \
+                                    --platform ${PLATFORMS} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-movie-service:${BUILD_NUMBER} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-movie-service:latest \
+                                    --push \
+                                    .
+                            '''
                         }
                     }
                 }
                 stage('Theater Service') {
                     steps {
-                        withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('Microservices-Backend/theater-service') {
-                                sh '''
-                                    export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
-                                    docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                                    
-                                    for i in {1..3}; do
-                                        echo "Attempt $i of 3..."
-                                        docker buildx build \
-                                            --platform ${PLATFORMS} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-theater-service:${BUILD_NUMBER} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-theater-service:latest \
-                                            --push \
-                                            . && break || {
-                                                echo "Build attempt $i failed, waiting 10 seconds..."
-                                                sleep 10
-                                            }
-                                    done
-                                '''
-                            }
+                        dir('Microservices-Backend/theater-service') {
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                docker buildx build \
+                                    --platform ${PLATFORMS} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-theater-service:${BUILD_NUMBER} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-theater-service:latest \
+                                    --push \
+                                    .
+                            '''
                         }
                     }
                 }
                 stage('Showtime Service') {
                     steps {
-                        withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('Microservices-Backend/showtime-service') {
-                                sh '''
-                                    export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
-                                    docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                                    
-                                    for i in {1..3}; do
-                                        echo "Attempt $i of 3..."
-                                        docker buildx build \
-                                            --platform ${PLATFORMS} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-showtime-service:${BUILD_NUMBER} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-showtime-service:latest \
-                                            --push \
-                                            . && break || {
-                                                echo "Build attempt $i failed, waiting 10 seconds..."
-                                                sleep 10
-                                            }
-                                    done
-                                '''
-                            }
+                        dir('Microservices-Backend/showtime-service') {
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                docker buildx build \
+                                    --platform ${PLATFORMS} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-showtime-service:${BUILD_NUMBER} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-showtime-service:latest \
+                                    --push \
+                                    .
+                            '''
                         }
                     }
                 }
                 stage('Booking Service') {
                     steps {
-                        withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('Microservices-Backend/booking-service') {
-                                sh '''
-                                    export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
-                                    docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                                    
-                                    for i in {1..3}; do
-                                        echo "Attempt $i of 3..."
-                                        docker buildx build \
-                                            --platform ${PLATFORMS} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-booking-service:${BUILD_NUMBER} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-booking-service:latest \
-                                            --push \
-                                            . && break || {
-                                                echo "Build attempt $i failed, waiting 10 seconds..."
-                                                sleep 10
-                                            }
-                                    done
-                                '''
-                            }
+                        dir('Microservices-Backend/booking-service') {
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                docker buildx build \
+                                    --platform ${PLATFORMS} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-booking-service:${BUILD_NUMBER} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-booking-service:latest \
+                                    --push \
+                                    .
+                            '''
                         }
                     }
                 }
                 stage('Payment Service') {
                     steps {
-                        withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('Microservices-Backend/payment-service') {
-                                sh '''
-                                    export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
-                                    docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                                    
-                                    for i in {1..3}; do
-                                        echo "Attempt $i of 3..."
-                                        docker buildx build \
-                                            --platform ${PLATFORMS} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-payment-service:${BUILD_NUMBER} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-payment-service:latest \
-                                            --push \
-                                            . && break || {
-                                                echo "Build attempt $i failed, waiting 10 seconds..."
-                                                sleep 10
-                                            }
-                                    done
-                                '''
-                            }
+                        dir('Microservices-Backend/payment-service') {
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                docker buildx build \
+                                    --platform ${PLATFORMS} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-payment-service:${BUILD_NUMBER} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-payment-service:latest \
+                                    --push \
+                                    .
+                            '''
                         }
                     }
                 }
                 stage('Review Service') {
                     steps {
-                        withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('Microservices-Backend/review-service') {
-                                sh '''
-                                    export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
-                                    docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                                    
-                                    for i in {1..3}; do
-                                        echo "Attempt $i of 3..."
-                                        docker buildx build \
-                                            --platform ${PLATFORMS} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-review-service:${BUILD_NUMBER} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-review-service:latest \
-                                            --push \
-                                            . && break || {
-                                                echo "Build attempt $i failed, waiting 10 seconds..."
-                                                sleep 10
-                                            }
-                                    done
-                                '''
-                            }
+                        dir('Microservices-Backend/review-service') {
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                docker buildx build \
+                                    --platform ${PLATFORMS} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-review-service:${BUILD_NUMBER} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-review-service:latest \
+                                    --push \
+                                    .
+                            '''
                         }
                     }
                 }
                 stage('Search Service') {
                     steps {
-                        withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('Microservices-Backend/search-service') {
-                                sh '''
-                                    export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
-                                    docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                                    
-                                    for i in {1..3}; do
-                                        echo "Attempt $i of 3..."
-                                        docker buildx build \
-                                            --platform ${PLATFORMS} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-search-service:${BUILD_NUMBER} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-search-service:latest \
-                                            --push \
-                                            . && break || {
-                                                echo "Build attempt $i failed, waiting 10 seconds..."
-                                                sleep 10
-                                            }
-                                    done
-                                '''
-                            }
+                        dir('Microservices-Backend/search-service') {
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                docker buildx build \
+                                    --platform ${PLATFORMS} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-search-service:${BUILD_NUMBER} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-search-service:latest \
+                                    --push \
+                                    .
+                            '''
                         }
                     }
                 }
                 stage('Notification Service') {
                     steps {
-                        withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('Microservices-Backend/notification-service') {
-                                sh '''
-                                    export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
-                                    docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                                    
-                                    for i in {1..3}; do
-                                        echo "Attempt $i of 3..."
-                                        docker buildx build \
-                                            --platform ${PLATFORMS} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-notification-service:${BUILD_NUMBER} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-notification-service:latest \
-                                            --push \
-                                            . && break || {
-                                                echo "Build attempt $i failed, waiting 10 seconds..."
-                                                sleep 10
-                                            }
-                                    done
-                                '''
-                            }
+                        dir('Microservices-Backend/notification-service') {
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                docker buildx build \
+                                    --platform ${PLATFORMS} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-notification-service:${BUILD_NUMBER} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-notification-service:latest \
+                                    --push \
+                                    .
+                            '''
                         }
                     }
                 }
                 stage('Settings Service') {
                     steps {
-                        withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('Microservices-Backend/settings-service') {
-                                sh '''
-                                    export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
-                                    docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                                    
-                                    for i in {1..3}; do
-                                        echo "Attempt $i of 3..."
-                                        docker buildx build \
-                                            --platform ${PLATFORMS} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-settings-service:${BUILD_NUMBER} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-settings-service:latest \
-                                            --push \
-                                            . && break || {
-                                                echo "Build attempt $i failed, waiting 10 seconds..."
-                                                sleep 10
-                                            }
-                                    done
-                                '''
-                            }
+                        dir('Microservices-Backend/settings-service') {
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                docker buildx build \
+                                    --platform ${PLATFORMS} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-settings-service:${BUILD_NUMBER} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-settings-service:latest \
+                                    --push \
+                                    .
+                            '''
                         }
                     }
                 }
                 stage('Dashboard Service') {
                     steps {
-                        withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('Microservices-Backend/dashboard-service') {
-                                sh '''
-                                    export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
-                                    docker logout || true
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                                    
-                                    for i in {1..3}; do
-                                        echo "Attempt $i of 3..."
-                                        docker buildx build \
-                                            --platform ${PLATFORMS} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-dashboard-service:${BUILD_NUMBER} \
-                                            --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-dashboard-service:latest \
-                                            --push \
-                                            . && break || {
-                                                echo "Build attempt $i failed, waiting 10 seconds..."
-                                                sleep 10
-                                            }
-                                    done
-                                '''
-                            }
+                        dir('Microservices-Backend/dashboard-service') {
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                docker buildx build \
+                                    --platform ${PLATFORMS} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-dashboard-service:${BUILD_NUMBER} \
+                                    --tag ${DOCKER_REGISTRY}/${PROJECT_NAME}-dashboard-service:latest \
+                                    --push \
+                                    .
+                            '''
                         }
                     }
                 }
