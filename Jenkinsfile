@@ -30,84 +30,120 @@ pipeline {
                 stage('Build User Service') {
                     steps {
                         dir('MicroServices-Backend/user-service') {
-                            sh 'mvn clean package -DskipTests'
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                mvn clean package -DskipTests
+                            '''
                         }
                     }
                 }
                 stage('Build Movie Service') {
                     steps {
                         dir('MicroServices-Backend/movie-service') {
-                            sh 'mvn clean package -DskipTests'
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                mvn clean package -DskipTests
+                            '''
                         }
                     }
                 }
                 stage('Build Theater Service') {
                     steps {
                         dir('MicroServices-Backend/theater-service') {
-                            sh 'mvn clean package -DskipTests'
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                mvn clean package -DskipTests
+                            '''
                         }
                     }
                 }
                 stage('Build Showtime Service') {
                     steps {
                         dir('MicroServices-Backend/showtime-service') {
-                            sh 'mvn clean package -DskipTests'
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                mvn clean package -DskipTests
+                            '''
                         }
                     }
                 }
                 stage('Build Booking Service') {
                     steps {
                         dir('MicroServices-Backend/booking-service') {
-                            sh 'mvn clean package -DskipTests'
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                mvn clean package -DskipTests
+                            '''
                         }
                     }
                 }
                 stage('Build Payment Service') {
                     steps {
                         dir('MicroServices-Backend/payment-service') {
-                            sh 'mvn clean package -DskipTests'
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                mvn clean package -DskipTests
+                            '''
                         }
                     }
                 }
                 stage('Build Review Service') {
                     steps {
                         dir('MicroServices-Backend/review-service') {
-                            sh 'mvn clean package -DskipTests'
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                mvn clean package -DskipTests
+                            '''
                         }
                     }
                 }
                 stage('Build Search Service') {
                     steps {
                         dir('MicroServices-Backend/search-service') {
-                            sh 'mvn clean package -DskipTests'
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                mvn clean package -DskipTests
+                            '''
                         }
                     }
                 }
                 stage('Build Notification Service') {
                     steps {
                         dir('MicroServices-Backend/notification-service') {
-                            sh 'mvn clean package -DskipTests'
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                mvn clean package -DskipTests
+                            '''
                         }
                     }
                 }
                 stage('Build Settings Service') {
                     steps {
                         dir('MicroServices-Backend/settings-service') {
-                            sh 'mvn clean package -DskipTests'
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                mvn clean package -DskipTests
+                            '''
                         }
                     }
                 }
                 stage('Build Dashboard Service') {
                     steps {
                         dir('MicroServices-Backend/dashboard-service') {
-                            sh 'mvn clean package -DskipTests'
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                mvn clean package -DskipTests
+                            '''
                         }
                     }
                 }
                 stage('Build API Gateway') {
                     steps {
                         dir('MicroServices-Backend/api-gateway') {
-                            sh 'mvn clean package -DskipTests'
+                            sh '''
+                                export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+                                mvn clean package -DskipTests
+                            '''
                         }
                     }
                 }
