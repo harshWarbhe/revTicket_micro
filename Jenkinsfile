@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         DOCKER_REGISTRY = 'harshwarbhe'
-        PROJECT_NAME = 'revticket_microservice'
+        PROJECT_NAME = 'revticket_microservice_micro'
         MAVEN_OPTS = '-Dmaven.repo.local=.m2/repository'
         PLATFORMS = 'linux/amd64,linux/arm64'
     }

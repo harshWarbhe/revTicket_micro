@@ -47,7 +47,7 @@ services:
       retries: 3
 
   api-gateway:
-    build: ./Microservices-Backend/api-gateway
+    build: ./revticket_microservice_micro/api-gateway
     container_name: api-gateway
     ports:
       - "8080:8080"
@@ -61,7 +61,7 @@ services:
       - revticket-network
 
   user-service:
-    build: ./Microservices-Backend/user-service
+    build: ./revticket_microservice_micro/user-service
     container_name: user-service
     ports:
       - "8081:8081"
@@ -83,7 +83,7 @@ services:
       - revticket-network
 
   movie-service:
-    build: ./Microservices-Backend/movie-service
+    build: ./revticket_microservice_micro/movie-service
     container_name: movie-service
     ports:
       - "8082:8082"
@@ -101,7 +101,7 @@ services:
       - revticket-network
 
   theater-service:
-    build: ./Microservices-Backend/theater-service
+    build: ./revticket_microservice_micro/theater-service
     container_name: theater-service
     ports:
       - "8083:8083"
@@ -119,7 +119,7 @@ services:
       - revticket-network
 
   showtime-service:
-    build: ./Microservices-Backend/showtime-service
+    build: ./revticket_microservice_micro/showtime-service
     container_name: showtime-service
     ports:
       - "8084:8084"
@@ -137,7 +137,7 @@ services:
       - revticket-network
 
   booking-service:
-    build: ./Microservices-Backend/booking-service
+    build: ./revticket_microservice_micro/booking-service
     container_name: booking-service
     ports:
       - "8085:8085"
@@ -155,7 +155,7 @@ services:
       - revticket-network
 
   payment-service:
-    build: ./Microservices-Backend/payment-service
+    build: ./revticket_microservice_micro/payment-service
     container_name: payment-service
     ports:
       - "8086:8086"
@@ -175,7 +175,7 @@ services:
       - revticket-network
 
   review-service:
-    build: ./Microservices-Backend/review-service
+    build: ./revticket_microservice_micro/review-service
     container_name: review-service
     ports:
       - "8087:8087"
@@ -191,7 +191,7 @@ services:
       - revticket-network
 
   search-service:
-    build: ./Microservices-Backend/search-service
+    build: ./revticket_microservice_micro/search-service
     container_name: search-service
     ports:
       - "8088:8088"
@@ -204,7 +204,7 @@ services:
       - revticket-network
 
   notification-service:
-    build: ./Microservices-Backend/notification-service
+    build: ./revticket_microservice_micro/notification-service
     container_name: notification-service
     ports:
       - "8089:8089"
@@ -221,7 +221,7 @@ services:
       - revticket-network
 
   settings-service:
-    build: ./Microservices-Backend/settings-service
+    build: ./revticket_microservice_micro/settings-service
     container_name: settings-service
     ports:
       - "8090:8090"
@@ -239,7 +239,7 @@ services:
       - revticket-network
 
   dashboard-service:
-    build: ./Microservices-Backend/dashboard-service
+    build: ./revticket_microservice_micro/dashboard-service
     container_name: dashboard-service
     ports:
       - "8091:8091"
