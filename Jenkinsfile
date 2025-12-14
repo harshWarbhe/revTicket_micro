@@ -29,7 +29,7 @@ pipeline {
             parallel {
                 stage('Build User Service') {
                     steps {
-                        dir('MicroServices-Backend/user-service') {
+                        dir('MicroServices-Backend-MA/user-service') {
                             sh '''
                                 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                 mvn clean package -DskipTests
@@ -39,7 +39,7 @@ pipeline {
                 }
                 stage('Build Movie Service') {
                     steps {
-                        dir('MicroServices-Backend/movie-service') {
+                        dir('MicroServices-Backend-MA/movie-service') {
                             sh '''
                                 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                 mvn clean package -DskipTests
@@ -49,7 +49,7 @@ pipeline {
                 }
                 stage('Build Theater Service') {
                     steps {
-                        dir('MicroServices-Backend/theater-service') {
+                        dir('MicroServices-Backend-MA/theater-service') {
                             sh '''
                                 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                 mvn clean package -DskipTests
@@ -59,7 +59,7 @@ pipeline {
                 }
                 stage('Build Showtime Service') {
                     steps {
-                        dir('MicroServices-Backend/showtime-service') {
+                        dir('MicroServices-Backend-MA/showtime-service') {
                             sh '''
                                 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                 mvn clean package -DskipTests
@@ -69,7 +69,7 @@ pipeline {
                 }
                 stage('Build Booking Service') {
                     steps {
-                        dir('MicroServices-Backend/booking-service') {
+                        dir('MicroServices-Backend-MA/booking-service') {
                             sh '''
                                 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                 mvn clean package -DskipTests
@@ -79,7 +79,7 @@ pipeline {
                 }
                 stage('Build Payment Service') {
                     steps {
-                        dir('MicroServices-Backend/payment-service') {
+                        dir('MicroServices-Backend-MA/payment-service') {
                             sh '''
                                 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                 mvn clean package -DskipTests
@@ -89,7 +89,7 @@ pipeline {
                 }
                 stage('Build Review Service') {
                     steps {
-                        dir('MicroServices-Backend/review-service') {
+                        dir('MicroServices-Backend-MA/review-service') {
                             sh '''
                                 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                 mvn clean package -DskipTests
@@ -99,7 +99,7 @@ pipeline {
                 }
                 stage('Build Search Service') {
                     steps {
-                        dir('MicroServices-Backend/search-service') {
+                        dir('MicroServices-Backend-MA/search-service') {
                             sh '''
                                 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                 mvn clean package -DskipTests
@@ -109,7 +109,7 @@ pipeline {
                 }
                 stage('Build Notification Service') {
                     steps {
-                        dir('MicroServices-Backend/notification-service') {
+                        dir('MicroServices-Backend-MA/notification-service') {
                             sh '''
                                 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                 mvn clean package -DskipTests
@@ -119,7 +119,7 @@ pipeline {
                 }
                 stage('Build Settings Service') {
                     steps {
-                        dir('MicroServices-Backend/settings-service') {
+                        dir('MicroServices-Backend-MA/settings-service') {
                             sh '''
                                 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                 mvn clean package -DskipTests
@@ -129,7 +129,7 @@ pipeline {
                 }
                 stage('Build Dashboard Service') {
                     steps {
-                        dir('MicroServices-Backend/dashboard-service') {
+                        dir('MicroServices-Backend-MA/dashboard-service') {
                             sh '''
                                 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                 mvn clean package -DskipTests
@@ -139,7 +139,7 @@ pipeline {
                 }
                 stage('Build API Gateway') {
                     steps {
-                        dir('MicroServices-Backend/api-gateway') {
+                        dir('MicroServices-Backend-MA/api-gateway') {
                             sh '''
                                 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                 mvn clean package -DskipTests
@@ -173,7 +173,8 @@ pipeline {
                             dir('Frontend') {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+                                    docker logout || true
+                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin || true
                                     
                                     docker buildx build \
                                         --platform ${PLATFORMS} \
@@ -189,10 +190,11 @@ pipeline {
                 stage('API Gateway') {
                     steps {
                         withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('MicroServices-Backend/api-gateway') {
+                            dir('MicroServices-Backend-MA/api-gateway') {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
-                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+                                    docker logout || true
+                                    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin || true
                                     
                                     docker buildx build \
                                         --platform ${PLATFORMS} \
@@ -208,7 +210,7 @@ pipeline {
                 stage('User Service') {
                     steps {
                         withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('MicroServices-Backend/user-service') {
+                            dir('MicroServices-Backend-MA/user-service') {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
@@ -227,7 +229,7 @@ pipeline {
                 stage('Movie Service') {
                     steps {
                         withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('MicroServices-Backend/movie-service') {
+                            dir('MicroServices-Backend-MA/movie-service') {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
@@ -246,7 +248,7 @@ pipeline {
                 stage('Theater Service') {
                     steps {
                         withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('MicroServices-Backend/theater-service') {
+                            dir('MicroServices-Backend-MA/theater-service') {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
@@ -265,7 +267,7 @@ pipeline {
                 stage('Showtime Service') {
                     steps {
                         withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('MicroServices-Backend/showtime-service') {
+                            dir('MicroServices-Backend-MA/showtime-service') {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
@@ -284,7 +286,7 @@ pipeline {
                 stage('Booking Service') {
                     steps {
                         withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('MicroServices-Backend/booking-service') {
+                            dir('MicroServices-Backend-MA/booking-service') {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
@@ -303,7 +305,7 @@ pipeline {
                 stage('Payment Service') {
                     steps {
                         withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('MicroServices-Backend/payment-service') {
+                            dir('MicroServices-Backend-MA/payment-service') {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
@@ -322,7 +324,7 @@ pipeline {
                 stage('Review Service') {
                     steps {
                         withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('MicroServices-Backend/review-service') {
+                            dir('MicroServices-Backend-MA/review-service') {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
@@ -341,7 +343,7 @@ pipeline {
                 stage('Search Service') {
                     steps {
                         withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('MicroServices-Backend/search-service') {
+                            dir('MicroServices-Backend-MA/search-service') {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
@@ -360,7 +362,7 @@ pipeline {
                 stage('Notification Service') {
                     steps {
                         withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('MicroServices-Backend/notification-service') {
+                            dir('MicroServices-Backend-MA/notification-service') {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
@@ -379,7 +381,7 @@ pipeline {
                 stage('Settings Service') {
                     steps {
                         withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('MicroServices-Backend/settings-service') {
+                            dir('MicroServices-Backend-MA/settings-service') {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
@@ -398,7 +400,7 @@ pipeline {
                 stage('Dashboard Service') {
                     steps {
                         withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            dir('MicroServices-Backend/dashboard-service') {
+                            dir('MicroServices-Backend-MA/dashboard-service') {
                                 sh '''
                                     export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
                                     echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
@@ -422,8 +424,8 @@ pipeline {
         always {
             sh '''
                 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
-                docker logout || echo "Docker logout skipped"
-                docker system prune -f || echo "Docker cleanup skipped"
+                docker logout || true
+                docker system prune -f || true
             '''
         }
         success {
